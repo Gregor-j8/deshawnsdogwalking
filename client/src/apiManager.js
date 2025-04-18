@@ -22,3 +22,27 @@ export const addDog = (dog) => {
     body: JSON.stringify(dog)
   }).then(res => res.json())
 }
+
+export const addCity = (city) => {
+  return fetch("http://localhost:5000/cities", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(city)
+  }).then(res => res.json())
+}
+
+export const getWalkerById = (id) => {
+  return fetch(`http://localhost:5000/walkers/${id}`).then(res => res.json())
+};
+
+export const editDog = (dog) => {
+  return fetch(`http://localhost:5000/dogs/${dog.id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(dog)
+  }).then(res => res.json())
+}

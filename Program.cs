@@ -156,19 +156,56 @@ app.MapGet("/walkers/{id}", (int id) =>
 
 app.MapPost("/dogs", (Dog dog) =>
 {
-    dog.Id = dogs.Max(d => d.Id) + 1;
-    dogs.Add(dog);
-
     if (dog.CityId == 0 || dog.Name == null)
     {
         return Results.BadRequest();
     }
+
+    dog.Id = dogs.Max(d => d.Id) + 1;
+    dogs.Add(dog);
 
     return Results.Created($"/dogs/{dog.Id}", new DogDTO
     {
         Id = dog.Id,
         Name = dog.Name,
         CityId = dog.CityId,
+    });
+});
+
+app.MapPost("/cities", (City city) =>
+{
+
+    if (city.Name == null)
+    {
+        return Results.BadRequest();
+    }
+
+    city.Id = Cities.Max(c => c.Id) + 1;
+    Cities.Add(city);
+
+    return Results.Created($"/cities/{city.Id}", new CityDTO
+    {
+        Id = city.Id,
+        Name = city.Name,
+    });
+});
+
+app.MapPut("/dogs/{dogId}", (int dogId, Dog dog) => {
+    Dog d = dogs.FirstOrDefault(d => d.Id == dogId);
+    Walker w = walkers.FirstOrDefault(w => w.Id == dog.WalkerId);
+    City c = Cities.FirstOrDefault(c => c.Id == dog.CityId);
+    
+    if (d == null || w == null || c == null) {
+        return Results.BadRequest();
+    }
+
+    d.WalkerId = w.Id;
+
+    return Results.Ok(new DogDTO {
+        Id = d.Id,
+        Name = d.Name,
+        CityId = d.CityId,
+        WalkerId = d.WalkerId
     });
 });
 
