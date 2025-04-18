@@ -36,11 +36,6 @@ export default function Home() {
       <div className="list">
         <h2>Walkers</h2>
 
-        <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-          <DropdownToggle caret>Walker Cities</DropdownToggle>
-          <DropdownMenu></DropdownMenu>
-        </Dropdown>
-
         {allWalkers.map((walker) => {
           return <div key={walker.id}>{walker.name}</div>;
         })}
