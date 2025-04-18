@@ -1,7 +1,7 @@
-import { getAllCities, getAllDogs, getAllWalkers } from "./apiManager";
+import { addCity, getAllCities, getAllDogs, getAllWalkers } from "./apiManager";
 import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import "./Home.css"
 
 export default function Home() {
@@ -12,6 +12,7 @@ export default function Home() {
   const [allDogs, setAllDogs] = useState([]);
   const [allCities, setAllCities] = useState([])
   const [cityId, setCityId] = useState(0)
+  const [city, setCity] = useState({})
 
   useEffect(() => {
     getAllDogs().then((res) => {
@@ -20,9 +21,6 @@ export default function Home() {
     getAllWalkers().then((res) => {
       setAllWalkers(res);
     });
-    getAllCities().then((res) => {
-      setAllCities(res)
-    })
   }, []);
 
   useEffect(() => {
@@ -31,14 +29,27 @@ export default function Home() {
   }, [allWalkers])
 
   useEffect(() => {
+    getAllCities().then((res) => {
+      setAllCities(res)
+    })
+  }, [allCities])
+
+  useEffect(() => {
     const filtered = allWalkers.filter(w => {
       return w.cities.some(c => c.id === cityId)
     })
 
-
     setFilteredWalkers(filtered)
 
   }, [cityId])
+
+  const handleSubmit = () => {
+    addCity(city).then(
+      setCity({}),
+      getAllCities().then((res) => {
+      setAllCities(res)
+    }))
+  }
 
   return (
     <div className="main-container">
@@ -52,13 +63,25 @@ export default function Home() {
         })}
 
       </div>
+      <div className="list">
+        <p>add city name</p>
+        <input type="text" onChange={(e) => {setCity({...city, name: e.target.value})}}/>
+        <button onClick={handleSubmit}>Add city</button>
+        <h2>Cities</h2>
+        {allCities.map((city) => {
+          return (
+            <div key={city.id}>{city.name}</div>
+          )
+        })}
+
+      </div>
 
       <div className="list">
 
         <h2>Walkers</h2>
 
         {filteredWalkers.map((walker) => {
-          return <div key={walker.id}>{walker.name}</div>;
+          return <><div key={walker.id}>{walker.name}</div> <Link to={`dogwalker/${walker.id}`}>add Dog</Link></>;
         })}
         <div className="dropdown mt-4">
           <button
