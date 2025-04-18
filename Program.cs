@@ -133,7 +133,21 @@ app.MapGet("/walkers/cityId={cityId}", (int cityId) =>
 
 });
 
+app.MapPost("/dogs", (Dog dog) => {
+    dog.Id = dogs.Max(d => d.Id) + 1;
+    dogs.Add(dog);
 
+    if (dog.CityId == 0 || dog.Name == null) {
+        return Results.BadRequest();
+    }
+
+    return Results.Created($"/dogs/{dog.Id}", new DogDTO {
+        Id = dog.Id,
+        Name = dog.Name,
+        CityId = dog.CityId,
+    });
+});
+  
 app.Run();
 
 

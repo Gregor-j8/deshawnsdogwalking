@@ -21,8 +21,8 @@ export default function Home() {
   return (
     <div className="main-container">
       <div className="list">
+        <Link to="/adddog">Add Dog</Link>
         <h2>Dogs</h2>
-        
         {allDogs.map((dog) => {        
           return (
               <Link to={`/dogdetails/${dog.id}`} key={dog.id}>{dog.name}</Link>    
