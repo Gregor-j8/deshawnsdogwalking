@@ -1,4 +1,4 @@
-import { addCity, getAllCities, getAllDogs, getAllWalkers } from "./apiManager";
+import { addCity, deleteDog, deleteWalker, getAllCities, getAllDogs, getAllWalkers } from "./apiManager";
 import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import { Link, useParams } from "react-router-dom";
@@ -58,7 +58,10 @@ export default function Home() {
         <h2>Dogs</h2>
         {allDogs.map((dog) => {
           return (
+            <>
             <Link to={`/dogdetails/${dog.id}`} key={dog.id}>{dog.name}</Link>
+            <button onClick={() => {deleteDog(dog.id)}}>Delete</button>
+            </>
           )
         })}
 
@@ -81,7 +84,9 @@ export default function Home() {
         <h2>Walkers</h2>
 
         {filteredWalkers.map((walker) => {
-          return <><div key={walker.id}>{walker.name}</div> <Link to={`dogwalker/${walker.id}`}>add Dog</Link></>;
+          return <><Link to={`/editwalker/${walker.id}`} key={walker.id}>{walker.name}</Link> <Link to={`dogwalker/${walker.id}`}>add Dog</Link>
+          <button onClick={() => {deleteWalker(walker.id)}}>Delete</button>
+          </>;
         })}
         <div className="dropdown mt-4">
           <button
