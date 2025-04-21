@@ -46,3 +46,31 @@ export const editDog = (dog) => {
     body: JSON.stringify(dog)
   }).then(res => res.json())
 }
+
+export const createCityWalker = (jointable) => {
+  return fetch(`http://localhost:5000/citywalkers`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(jointable)
+  }).then(res => res.json())
+}
+
+export const deleteCityWalker = (id) => {
+  return fetch(`http://localhost:5000/citywalkers/${id}`, {method: 'DELETE'}).then(res => res.json())
+}
+
+export const getCitywalkers = () => {
+  return fetch(`http://localhost:5000/citywalkers`).then(res => res.json())
+}
+
+export const changeWalkerName = (walker) => {
+  return fetch(`http://localhost:5000/walkers/${walker.id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(walker)
+  }).then(res => res.json())
+}

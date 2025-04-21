@@ -81,7 +81,7 @@ export default function Home() {
         <h2>Walkers</h2>
 
         {filteredWalkers.map((walker) => {
-          return <><div key={walker.id}>{walker.name}</div> <Link to={`dogwalker/${walker.id}`}>add Dog</Link></>;
+          return <><Link to={`/editwalker/${walker.id}`} key={walker.id}>{walker.name}</Link> <Link to={`dogwalker/${walker.id}`}>add Dog</Link></>;
         })}
         <div className="dropdown mt-4">
           <button

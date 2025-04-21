@@ -209,6 +209,82 @@ app.MapPut("/dogs/{dogId}", (int dogId, Dog dog) => {
     });
 });
 
+app.MapGet("/citywalkers", () =>
+{
+    return cityWalkers.Select(cw => new CityWalkerDTO {
+        Id = cw.Id,
+        CityId = cw.CityId,
+        WalkerId = cw.WalkerId
+
+    });
+});
+
+app.MapPost("/citywalkers", (CityWalker jointable) => {
+
+    if (jointable.CityId == 0 || jointable.WalkerId == 0)
+    {
+        return Results.BadRequest();
+    }
+
+    jointable.Id = cityWalkers.Max(cw => cw.Id) + 1;
+    cityWalkers.Add(jointable);
+
+    return Results.Created($"/citywalkers/{jointable.Id}", new CityWalkerDTO
+    {
+        Id = jointable.Id,
+        WalkerId = jointable.WalkerId,
+        CityId = jointable.CityId,
+    });
+});
+
+app.MapDelete("/citywalkers/{id}", (int id) => {
+    CityWalker jointable = cityWalkers.FirstOrDefault(cw => cw.Id == id);
+
+    if (jointable == null) {
+        return Results.BadRequest();
+    }
+
+    cityWalkers.Remove(jointable);
+
+    return Results.Ok();
+});
+
+app.MapPut("/walkers/{id}", (int id, Walker walker) => {
+    Walker w = walkers.FirstOrDefault(w => w.Id == id);
+
+    if (w == null) {
+        return Results.BadRequest();
+    }
+    w.Name = walker.Name;
+
+    return Results.Accepted($"walkers/{id}", new WalkerDTO {
+        Id = w.Id,
+        Name = w.Name
+    });
+});
+
+app.MapDelete("/walkers/{id}", (int id) => {
+    Walker w = walkers.FirstOrDefault(w => w.Id == id);
+
+    if (w == null) {
+        return Results.BadRequest();
+    }
+
+    walkers.Remove(w);
+
+    return Results.Ok();
+});
+
+app.MapDelete("/dogs/{id}", (int id) => {
+    Dog d = dogs.FirstOrDefault(d => d.Id == id);
+
+    if (d == null) {
+        return Results.BadRequest();
+    }
+
+    dogs.Remove(d);
+
+    return Results.Ok();
+});
+
 app.Run();
-
-
