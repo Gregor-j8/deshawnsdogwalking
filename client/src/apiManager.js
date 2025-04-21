@@ -60,6 +60,12 @@ export const createCityWalker = (jointable) => {
 export const deleteCityWalker = (id) => {
   return fetch(`http://localhost:5000/citywalkers/${id}`, {method: 'DELETE'}).then(res => res.json())
 }
+export const deleteWalker = (id) => {
+  return fetch(`http://localhost:5000/walkers/${id}`, {method: 'DELETE'}).then(res => res.json())
+}
+export const deleteDog = (id) => {
+  return fetch(`http://localhost:5000/dogs/${id}`, {method: 'DELETE'}).then(res => res.json())
+}
 
 export const getCitywalkers = () => {
   return fetch(`http://localhost:5000/citywalkers`).then(res => res.json())
